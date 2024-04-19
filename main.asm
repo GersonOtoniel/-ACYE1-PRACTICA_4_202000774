@@ -450,13 +450,13 @@ inicio:
         MOV CX, 0000
         MOV DI, offset wall_one
         CALL PDRAWFIGURESCREEN
-        MOV AX, 03
+        MOV AX, 0003
         MOV DI, offset wall_five
         CALL PDRAWFIGURESCREEN
-        MOV AX, 06
+        MOV AX, 0006
         MOV DI, offset wall_five
         CALL PDRAWFIGURESCREEN
-        MOV AX, 09
+        MOV AX, 0009
         MOV DI, offset wall_two
         CALL PDRAWFIGURESCREEN
 
@@ -465,16 +465,16 @@ inicio:
         INC CX
         CALL PPAINTVERTICAL
         INC CX
-        MOV AX, 00
+        MOV AX, 0000
         MOV DI, offset wall_ten
         CALL PDRAWFIGURESCREEN
-        MOV AX, 03
+        MOV AX, 0003
         MOV DI, offset wall_six
         CALL PDRAWFIGURESCREEN
-        MOV AX, 06
+        MOV AX, 0006
         MOV DI, offset wall_six
         CALL PDRAWFIGURESCREEN
-        MOV AX, 09
+        MOV AX, 0009
         MOV DI, offset wall_twelve
         CALL PDRAWFIGURESCREEN
         CALL PPAINTHORIZONTAL
@@ -484,16 +484,16 @@ inicio:
         INC CX
         CALL PPAINTVERTICAL
         INC CX
-        MOV AX, 00
+        MOV AX, 0000
         MOV DI, offset wall_ten
         CALL PDRAWFIGURESCREEN
-        MOV AX, 03
+        MOV AX, 0003
         MOV DI, offset wall_six
         CALL PDRAWFIGURESCREEN
-        MOV AX, 06
+        MOV AX, 0006
         MOV DI, offset wall_six
         CALL PDRAWFIGURESCREEN
-        MOV AX, 09
+        MOV AX, 0009
         MOV DI, offset wall_twelve
         CALL PDRAWFIGURESCREEN
         CALL PPAINTHORIZONTAL
@@ -503,16 +503,16 @@ inicio:
         INC CX
         CALL PPAINTVERTICAL
         INC CX
-        MOV AX, 00
+        MOV AX, 0000
         MOV DI, offset wall_fourteen
         CALL PDRAWFIGURESCREEN
-        MOV AX, 03
+        MOV AX, 0003
         MOV DI, offset wall_eleven
         CALL PDRAWFIGURESCREEN
-        MOV AX, 06
+        MOV AX, 0006
         MOV DI, offset wall_eleven
         CALL PDRAWFIGURESCREEN
-        MOV AX, 09
+        MOV AX, 0009
         MOV DI, offset wall_fifteen
         CALL PDRAWFIGURESCREEN
         CALL PPAINTHORIZONTAL
@@ -523,7 +523,7 @@ inicio:
     crearTablero ENDP
 
     PPAINTHORIZONTAL PROC
-        MOV AX, 01
+        MOV AX, 0001
         MOV DI, offset wall_four
         CALL PDRAWFIGURESCREEN
         INC AX
@@ -550,16 +550,16 @@ inicio:
     PPAINTHORIZONTAL ENDP
 
     PPAINTVERTICAL PROC
-      MOV AX, 00
+      MOV AX, 0000
       MOV DI, offset wall_three
       CALL PDRAWFIGURESCREEN
-      ADD AX, 03
+      ADD AX, 0003
       MOV DI, offset wall_three
       CALL PDRAWFIGURESCREEN
-      ADD AX, 03
+      ADD AX, 0003
       MOV DI, offset wall_three
       CALL PDRAWFIGURESCREEN
-      ADD AX, 03
+      ADD AX, 0003
       MOV DI, offset wall_three
       CALL PDRAWFIGURESCREEN
       RET
