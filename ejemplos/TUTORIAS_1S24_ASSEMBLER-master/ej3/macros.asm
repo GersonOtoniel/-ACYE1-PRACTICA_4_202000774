@@ -223,7 +223,7 @@ mVerficarCoordenadas macro
     MOV AL, [BX]
     SUB AL, 31
     MOV AH, AL      ;VALOR DE MI FILA
-    MOV coordenada_y, AH
+    MOV cursorY, AH
     
     INC BX
     MOV AL, [BX] ;ESTE SERIA LA COMA
@@ -232,7 +232,7 @@ mVerficarCoordenadas macro
     MOV AL, [BX] ;VALOR DE MI COLUMNA
     SUB AL, 31
     MOV DL, AL
-    MOV coordenada_x, DL
+    MOV cursorX, DL
 
     POP CX
     POP DX

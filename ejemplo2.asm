@@ -43,31 +43,7 @@
             CMP BL, 0
             JNE Ciclo
 
-        MOV AH, 86h     ; Aplicar Un Delay
-        MOV CX, 25
-        INT 15h
-
-        MOV AL, 03h       ; Cambiar A Modo Texto
-        MOV AH, 00h
-        INT 10h
         
-        ; Imprimimos Cadena Personalizada
-        MOV AH, 13h  ; Codigo Interrupcion
-        MOV AL, 1    ; 00000011 -> MOV AL, 2 Modo Escritura
-        MOV BH, 0    ; Pagina a Utilizar
-        MOV BL, 04h  ; Atributos 4 bits altos color black => 0000
-                     ; Atributos 4 bits bajos color red => 0100
-                     ; MOV BL, 00000100b (Opcion Alterna)
-        MOV CX, 26   ; Cantidad De Caracteres De La Cadena
-        MOV DL, 10   ; Columna Donde se va a empezar a escribir
-        MOV DH, 7    ; Fila Donde se va a empezar a escribir
-        LEA BP, msg2 ; Offset de la segunda cadena 2 en B
-        INT 10h      ; Invocar la interrupcion
-
-        ; Aplicamos Un Delay
-        MOV AH, 86h       
-        MOV CX, 5
-        INT 15h
 
         Salir:
             MOV AX, 4C00h            ; Terminamos El Programa

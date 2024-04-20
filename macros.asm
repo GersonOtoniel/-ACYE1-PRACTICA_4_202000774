@@ -253,8 +253,9 @@ mGetKey macro
     INT 21h
 endm
 
-mTextMode macro
+modoTexto macro
     mov AX, 03
+    MOV AH,00
     int 10
 endm
 
@@ -290,7 +291,7 @@ mDivLine macro line, color
     POP AX
 endm
 
-mPrintTextIntoVideo MACRO row, column, text, chars, color
+imprimirVideo MACRO row, column, text, chars, color
     ;AH         13h
     ;AL         Subservice (0-3)
     ;BH         Display page number
@@ -307,8 +308,8 @@ mPrintTextIntoVideo MACRO row, column, text, chars, color
     MOV CX, chars
     MOV DH, row
     MOV DL, column
-    ;LEA BX, text
-    LEA BP, text
+    LEA BX, text
+    MOV BP,BX
     MOV BX, color
     INT 10
 
@@ -341,7 +342,7 @@ mMoveToVideo macro
     MOV DS, DX
 endm
 
-mEnterText macro
+obtenerCoordenadas macro
     LOCAL enterChar, endproc
     LOCAL validChar, invalidChar, handleBackspace
     XOR DI, DI
@@ -355,9 +356,9 @@ mEnterText macro
         JE endproc
         CMP AL, 08     ; Comprueba si el carácter es el retroceso (backspace)
         JE  handleBackspace ; Si es retroceso, salta a handleBackspace
-        CMP AL, 30     ; Comprueba si el carácter es un número
+        CMP AL, 48     ; Comprueba si el carácter es un número
         JB  invalidChar ; Si es menor que '0', salta a invalidChar
-        CMP AL, 39     ; Comprueba si el carácter es un número
+        CMP AL, 57     ; Comprueba si el carácter es un número
         JA  invalidChar ; Si es mayor que '9', salta a invalidChar
         ; JMP validChar ; Si no es un número ni un punto y coma, salta a invalidChar
     validChar:
@@ -377,7 +378,7 @@ mEnterText macro
         ; Borra el carácter anterior en pantalla
         push dx
         mov ah, 02     ; Función de DOS para imprimir un carácter
-        mov dl, 20
+        mov dl, 32
         ; mov al, 040     ; Carácter de espacio en blanco
         int 21h         ; Llama a la interrupción del BIOS para imprimir un carácter
         pop dx
@@ -403,14 +404,14 @@ mEnterText macro
         ; Borra el carácter anterior en pantalla
         push dx
         mov ah, 02     ; Función de DOS para imprimir un carácter
-        mov dl, 20
+        mov dl, al
         ; mov al, 040     ; Carácter de espacio en blanco
         int 21h         ; Llama a la interrupción del BIOS para imprimir un carácter
         pop dx
         
         DEC cursorX
         mov ah, 02     ; Función de DOS para mover el cursor
-        mov dl, cursorX      ; Columna actual
+        mov dl, cursorX     ; Columna actual
         int 10h         ; Llama a la interrupción del BIOS para mover el cursor
 
         JMP enterChar

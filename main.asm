@@ -146,6 +146,21 @@ mostrarMenu MACRO
         ;sda
 ENDM
 
+
+imprimirenVideo MACRO fila, columna, texto
+    MOV AH, 13h  ; Codigo Interrupcion
+    MOV AL, 1    ; 00000011 -> MOV AL, 2 Modo Escritura
+    MOV BH, 0    ; Pagina a Utilizar
+    MOV BL, 02h  ; Atributos 4 bits altos color black => 0000
+                    ; Atributos 4 bits bajos color red => 0100
+                    ; MOV BL, 00000100b (Opcion Alterna)
+    MOV CX, lengthof texto  ; Cantidad De Caracteres De La Cadena
+    MOV DL, columna   ; Columna Donde se va a empezar a escribir
+    MOV DH, fila    ; Fila Donde se va a empezar a escribir
+    MOV BP, OFFSET texto ; Offset de la segunda cadena 2 en B
+    INT 10h  
+ENDM
+
 .MODEL small
 
 .STACK 100h
@@ -249,8 +264,6 @@ ENDM
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
-
-
     wall_one    db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 01, 01, 01, 01, 01, 01
@@ -259,8 +272,6 @@ ENDM
                 db     00, 00, 01, 01, 01, 01, 01, 01
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_two    db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     01, 01, 01, 01, 01, 01, 00, 00
@@ -269,8 +280,6 @@ ENDM
                 db     01, 01, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_three  db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
@@ -279,8 +288,6 @@ ENDM
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_four   db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     01, 01, 01, 01, 01, 01, 01, 01
@@ -289,8 +296,6 @@ ENDM
                 db     01, 01, 01, 01, 01, 01, 01, 01
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
-
-
     wall_five   db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     01, 01, 01, 01, 01, 01, 01, 01
@@ -299,8 +304,6 @@ ENDM
                 db     01, 01, 01, 01, 01, 01, 01, 01
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_six    db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     01, 01, 01, 01, 01, 01, 01, 01
@@ -309,8 +312,6 @@ ENDM
                 db     01, 01, 01, 01, 01, 01, 01, 01
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_ten    db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 01, 01
@@ -319,8 +320,6 @@ ENDM
                 db     00, 00, 01, 01, 01, 01, 01, 01
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_eleven db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     01, 01, 01, 01, 01, 01, 01, 01
@@ -329,8 +328,6 @@ ENDM
                 db     01, 01, 01, 01, 01, 01, 01, 01
                 db     00, 00, 00, 00, 00, 00, 00, 00
                 db     00, 00, 00, 00, 00, 00, 00, 00
-
-
     wall_twelve db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     01, 01, 01, 01, 01, 01, 00, 00
@@ -339,8 +336,6 @@ ENDM
                 db     01, 01, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
                 db     00, 00, 01, 01, 01, 01, 00, 00
-
-
     wall_fourteen   db     00, 00, 01, 01, 01, 01, 00, 00
                     db     00, 00, 01, 01, 01, 01, 00, 00
                     db     00, 00, 01, 01, 01, 01, 01, 01
@@ -349,8 +344,6 @@ ENDM
                     db     00, 00, 01, 01, 01, 01, 01, 01
                     db     00, 00, 00, 00, 00, 00, 00, 00
                     db     00, 00, 00, 00, 00, 00, 00, 00
-
-
     wall_fifteen    db     00, 00, 01, 01, 01, 01, 00, 00
                     db     00, 00, 01, 01, 01, 01, 00, 00
                     db     01, 01, 01, 01, 01, 01, 00, 00
@@ -358,8 +351,7 @@ ENDM
                     db     01, 01, 01, 01, 01, 01, 00, 00
                     db     01, 01, 01, 01, 01, 01, 00, 00
                     db     00, 00, 00, 00, 00, 00, 00, 00
-                    db     00, 00, 00, 00, 00, 00, 00, 00
-    
+                    db     00, 00, 00, 00, 00, 00, 00, 00    
     barrax_uno      db     01, 01, 00, 00, 00, 00, 00, 00
                     db     00, 01, 01, 00, 00, 00, 00, 00
                     db     00, 00, 01, 01, 00, 00, 00, 00
@@ -368,7 +360,6 @@ ENDM
                     db     00, 00, 00, 00, 00, 01, 01, 00
                     db     00, 00, 00, 00, 00, 00, 01, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
-
     barrax_dos      db     00, 00, 00, 00, 00, 00, 01, 01
                     db     00, 00, 00, 00, 00, 01, 01, 00
                     db     00, 00, 00, 00, 01, 01, 00, 00
@@ -387,7 +378,6 @@ ENDM
                     db     00, 01, 01, 00, 00, 00, 00, 00
                     db     01, 01, 00, 00, 00, 00, 00, 00
                     db     01, 00, 00, 00, 00, 00, 00, 00
-
     barrao_dos      db     01, 00, 00, 00, 00, 00, 00, 00
                     db     01, 00, 00, 00, 00, 00, 00, 00
                     db     01, 00, 00, 00, 00, 00, 00, 00
@@ -396,7 +386,6 @@ ENDM
                     db     01, 00, 00, 00, 00, 00, 00, 00
                     db     01, 00, 00, 00, 00, 00, 00, 00
                     db     01, 01, 01, 01, 01, 01, 01, 01
-
     barrao_tres     db     01, 01, 01, 01, 01, 01, 01, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
@@ -405,7 +394,6 @@ ENDM
                     db     00, 00, 00, 00, 00, 00, 00, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
-
     barrao_cuatro   db     00, 00, 00, 00, 00, 00, 00, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
@@ -425,11 +413,12 @@ inicio:
         MOV DX, @data
         MOV DS, DX
         MOV ES,DX
-        ;mostrarMenu
+
+        mostrarMenu
 
 
-        ;CMP opcion2,50
-        ;JE Jugar1
+        CMP opcion2,50
+        JE Jugar1
 
 
         Jugar1:
@@ -437,46 +426,33 @@ inicio:
             ;imprimirMensajes mensajeGanador
             modoVideo
             ;CALL mLimpiar
-            CALL crearTablero
+            ;CALL crearTablero
 
-
-        terminarPrograma
+            ;CALL mLimpiar
+            ;CALL crearTablero
+            ;CALL PPAINTHORIZONTAL
+            ;dibujarlineaHorizontal
+            MOV BL, 50      ; BL -> Contador 50 iteraciones
+            MOV AL, 0Ch     ; Color codigo C (se puede usar un numero entre 0 y 255)
+            MOV CX, 10      ; Empiecen en la columna 10
+            MOV DX, 20      ; Empiece en la fila 20
+            MOV AH, 0Ch  
 
     MAIN ENDP
 
     crearTablero PROC
-        CALL PPAINTHORIZONTAL
-        MOV AX, 0000
-        MOV CX, 0000
-        MOV DI, offset wall_one
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0003
-        MOV DI, offset wall_five
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0006
-        MOV DI, offset wall_five
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0009
-        MOV DI, offset wall_two
-        CALL PDRAWFIGURESCREEN
-
+        MOV CX, 00
         INC CX
         CALL PPAINTVERTICAL
         INC CX
         CALL PPAINTVERTICAL
-        INC CX
-        MOV AX, 0000
-        MOV DI, offset wall_ten
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0003
-        MOV DI, offset wall_six
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0006
-        MOV DI, offset wall_six
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0009
-        MOV DI, offset wall_twelve
-        CALL PDRAWFIGURESCREEN
+        INC CX   
+        MOV AX, 3;posicion columna de la cruz
+        MOV DI, offset wall_six ;cruz
+        CALL PDRAWFIGURESCREEN;dibujo la cruz
+        MOV AX, 06;posicion columna de la cruz
+        MOV DI, offset wall_six ;cruz
+        CALL PDRAWFIGURESCREEN;dibujo la cruz
         CALL PPAINTHORIZONTAL
 
         INC CX
@@ -484,18 +460,12 @@ inicio:
         INC CX
         CALL PPAINTVERTICAL
         INC CX
-        MOV AX, 0000
-        MOV DI, offset wall_ten
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0003
-        MOV DI, offset wall_six
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0006
-        MOV DI, offset wall_six
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0009
-        MOV DI, offset wall_twelve
-        CALL PDRAWFIGURESCREEN
+        MOV AX, 0003 ;posicion columna de la cruz
+        MOV DI, offset wall_six;curz
+        CALL PDRAWFIGURESCREEN;dibujo la cruz
+        MOV AX, 0006 ;posicion columna de la cruz
+        MOV DI, offset wall_six;cruz
+        CALL PDRAWFIGURESCREEN;dibujo la cruz
         CALL PPAINTHORIZONTAL
 
         INC CX
@@ -503,34 +473,19 @@ inicio:
         INC CX
         CALL PPAINTVERTICAL
         INC CX
-        MOV AX, 0000
-        MOV DI, offset wall_fourteen
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0003
         MOV DI, offset wall_eleven
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0006
-        MOV DI, offset wall_eleven
-        CALL PDRAWFIGURESCREEN
-        MOV AX, 0009
-        MOV DI, offset wall_fifteen
-        CALL PDRAWFIGURESCREEN
-        CALL PPAINTHORIZONTAL
-
-
-
         RET
     crearTablero ENDP
 
     PPAINTHORIZONTAL PROC
-        MOV AX, 0001
+        MOV AX, 01
         MOV DI, offset wall_four
         CALL PDRAWFIGURESCREEN
         INC AX
         MOV DI, offset wall_four
         CALL PDRAWFIGURESCREEN
         
-        INC AX
+        INC AX;se incrementa dos veces porque hay intersecciones
         INC AX
         MOV DI, offset wall_four
         CALL PDRAWFIGURESCREEN
@@ -550,13 +505,7 @@ inicio:
     PPAINTHORIZONTAL ENDP
 
     PPAINTVERTICAL PROC
-      MOV AX, 0000
-      MOV DI, offset wall_three
-      CALL PDRAWFIGURESCREEN
-      ADD AX, 0003
-      MOV DI, offset wall_three
-      CALL PDRAWFIGURESCREEN
-      ADD AX, 0003
+      MOV AX, 0003
       MOV DI, offset wall_three
       CALL PDRAWFIGURESCREEN
       ADD AX, 0003
@@ -566,8 +515,8 @@ inicio:
     PPAINTVERTICAL ENDP
     
     PDRAWFIGURESCREEN PROC
-        PUSH AX
-        PUSH CX
+        PUSH AX ;control de columnas
+        PUSH CX ;control de filas
 
         MOV BX, 0000
         MOV DL, 08
@@ -577,16 +526,16 @@ inicio:
         MUL DL
         XCHG AX, CX     ; POS X = BX    POS Y = CX
         position_screen:
-            CMP CX, 0000
+            CMP CX, 0001
             JE end_position_screen
-            ADD BX, 140     ; BX SE QUEDA CON LA POSICION FINAL DONDE SE COLOCARA EL GRAFICO
+            ADD BX, 320    ; BX SE QUEDA CON LA POSICION FINAL DONDE SE COLOCARA EL GRAFICO
             LOOP position_screen
         end_position_screen:
-            MOV CX, 0008
-        draw_figure_row_screen:
+            MOV CX, 008;8 columnas
+        draw_figure_row_screen:;seva a ir fila por fila, las 8 filas
             PUSH CX
-            MOV CX, 0008
-        draw_figure_column_screen:
+            MOV CX, 0008;8 filas
+        draw_figure_column_screen:;se va a ir columna por columna, las 8 columnas
             MOV AL, [DI]
 
             PUSH DS
@@ -601,7 +550,7 @@ inicio:
 
             POP CX
             SUB BX, 08      ; SE LE RESTA LOS 8 QUE SE AVANZAN EN LAS COLUMNAS
-            ADD BX, 140     ; SE LE SUMA LOS 320 PARA AVANZAR A LA SIGUIENTE FILA
+            ADD BX, 320     ; SE LE SUMA LOS 320 PARA AVANZAR A LA SIGUIENTE FILA
             LOOP draw_figure_row_screen
             POP CX
             POP AX
@@ -671,7 +620,7 @@ inicio:
         PUSH CX
 
         MOV DI, offset object_map
-        MOV DL, 03          ; 3d
+        MOV DL, 3          ; 3d
         XCHG AX, CX
         MUL DL              ; POS Y * 3d
         XCHG AX, CX
@@ -683,7 +632,7 @@ inicio:
         MOV [DI], DH        ; colocar objeto
         JMP finish_put_figure
         celda_ocupada:
-            mPrintTextIntoVideo 0Bh, 00, mensajeCeldaInvalida, 1F, 0004
+            imprimirenVideo 0Bh, 00, mensajeCeldaInvalida,0004
             MOV celdaInvalida, 01
         finish_put_figure:
             POP CX
@@ -723,7 +672,7 @@ inicio:
             LOOP dibujarFiguraColum
 
             POP CX
-            SUB CX,08
+            SUB BX,08
             ADD BX,140
             LOOP dibujarFiguraFila
 
@@ -785,5 +734,180 @@ inicio:
       POP DX
       RET
     PMOVESTOVIDEOMODE ENDP
+
+    PMOVERCURSOR PROC
+        PUSH DX
+        PUSH AX
+        mov dh, cursorY       ; Fila
+        mov dl, cursorX      ; Columna
+        mov ah, 02h     ; Función de DOS para mover el cursor
+        int 10h         ; Llama a la interrupción del BIOS para mover el cursor
+        POP AX
+        POP DX
+        RET
+    PMOVERCURSOR ENDP
+
+    PCOORDENADASOBJETOS PROC
+        XOR AX, AX
+        MOV AL, ingresarCoordenadaX
+        DEC AL
+        MOV CL, 6
+        MUL CL
+        ADD AX, 6
+        INC AX
+        PUSH AX
+        MOV AL, ingresarCoordenadaY
+        DEC AL
+        MOV CL, 6
+        MUL CL
+        ADD AX, 6
+        INC AX
+        XOR CX, CX
+        MOV CX, AX
+        POP AX
+        RET
+    PCOORDENADASOBJETOS ENDP
+
+    PCLEANLINECURSOR PROC
+        XOR AX, AX      ; POS X
+        XOR CX, CX      ; POS Y
+        XOR SI, SI
+        XOR BX, BX
+        MOV CX, 28
+        columns_cls:
+            mov DI, offset empty_block
+            push AX
+            push CX
+            XOR CX, CX
+            mov CL, cursorY 
+            call dibujarFigura
+            pop CX
+            pop AX
+            inc AX      ; SE INCREMENTA POSICION EN X
+            loop columns_cls
+        clean_screen:
+            ret
+    PCLEANLINECURSOR ENDP
+
+    PCLEANANYLINE PROC
+        XOR AX, AX      ; POS X
+        XOR CX, CX      ; POS Y
+        XOR SI, SI
+        XOR BX, BX
+        MOV CX, 28
+        traverse_columns_cls:
+            mov DI, offset empty_block
+            push AX
+            push CX
+            XOR CX, CX
+            mov CL, limpiarFila
+            call dibujarFigura
+            pop CX
+            pop AX
+            inc AX      ; SE INCREMENTA POSICION EN X
+            loop traverse_columns_cls
+        finish_clean_screen:
+            ret
+    PCLEANANYLINE ENDP
+
+    PCHECKPLAYERWIN proc
+        ; Comprueba las filas
+        mov cx, 3 ; Número de filas
+        mov si, offset object_map
+        checkRows:
+            ; Compara cada fila
+            PUSH SI
+            mov al, [si]
+            inc si
+            cmp al, [si]
+            jne nextRow
+            inc si
+            cmp al, [si]
+            jne nextRow
+            ; Si los tres elementos de la fila son 1, hay un ganador
+            cmp al, turno
+            jne nextRow
+            ; En este punto, tenemos un ganador (jugador 1)
+            POP SI
+            mov al, 1
+            mov Ganador, 01
+            ret
+
+        nextRow:
+            POP SI
+            add si, 3 ; Avanza al inicio de la siguiente fila
+            loop checkRows ; Repite para todas las filas
+
+            ; Comprueba las columnas
+            mov cx, 3 ; Número de columnas
+            mov si, offset object_map
+        checkColumns:
+            ; Compara cada columna
+            PUSH SI
+            mov al, [si]
+            add si, 3 ; Avanza a la siguiente columna
+            cmp al, [si]
+            jne nextColumn
+            add si, 3 ; Avanza a la siguiente columna
+            cmp al, [si]
+            jne nextColumn
+            ; Si los tres elementos de la columna son 1, hay un ganador
+            cmp al, turno
+            jne nextColumn
+            ; En este punto, tenemos un ganador (jugador 1)
+            mov al, turno
+            mov Ganador, 01
+            POP SI
+            ret
+
+        nextColumn:
+            POP SI
+            ; sub si, 8 ; Retrocede al inicio de la siguiente columna
+            INC SI
+            loop checkColumns ; Repite para todas las columnas
+
+            ; Comprueba las diagonales
+            mov si, offset object_map
+            ; Compara la diagonal principal (de izquierda a derecha)
+            mov al, [si]
+            add si, 4 ; Avanza a la siguiente celda de la diagonal
+            cmp al, [si]
+            jne checkSecondaryDiagonal
+            add si, 4 ; Avanza a la siguiente celda de la diagonal
+            cmp al, [si]
+            jne checkSecondaryDiagonal
+            ; Si los tres elementos de la diagonal son 1, hay un ganador
+            cmp al, turno
+            jne checkSecondaryDiagonal
+            ; En este punto, tenemos un ganador (jugador 1)
+            mov al, turno
+            mov Ganador, 01
+            ret
+
+        checkSecondaryDiagonal:
+            ; Comprueba la diagonal secundaria (de derecha a izquierda)
+            mov si, offset object_map + 2 ; Comienza en la segunda celda de la diagonal secundaria
+            mov al, [si] ; Obtiene el primer elemento de la diagonal
+            add si, 2 ; Retrocede a la siguiente celda de la diagonal
+            cmp al, [si] ; Compara con el segundo elemento de la diagonal
+            jne noWinner ; Si no son iguales, no hay ganador
+            add si, 2 ; Retrocede a la siguiente celda de la diagonal
+            cmp al, [si] ; Compara con el tercer elemento de la diagonal
+            jne noWinner ; Si no son iguales, no hay ganador
+            ; Si los tres elementos de la diagonal son 1, hay un ganador
+            cmp al, turno
+            jne noWinner ; Si no todos son iguales a 1, no hay ganador
+            ; En este punto, tenemos un ganador (jugador 1)
+            mov al, turno
+            mov Ganador, 01
+            ret
+
+        noWinner:
+            ; No hay ganador para el jugador 1
+            xor al, al
+            ret
+
+    PCHECKPLAYERWIN endp
+    
 
 END inicio
