@@ -166,8 +166,6 @@ ENDM
 .STACK 100h
 
 .DATA
-    num1 db '$hola'
-    num3 db 'hola2$'
     salto db 10,13,'$'
     opcion db ?
     opcion2 db ?
@@ -221,7 +219,7 @@ ENDM
     datosh db '                 ESCUELA DE CIENCIAS Y SISTEMAS'
     datosi db '          ARQUITECTURA DE COMPUTADORES Y ENSAMBLADORES 2'
     datosj db '                     PRIMER SEMESTRE 2024'
-    datosk db '              Gerson David Otoniel Gonzalez Morales'
+    datosk db '              Gerson David Otoniel Cox Gonzalez Morales'
     datosl db '                          202000774'
     regresarInfo db 'Para regresar al menu presione Enter>>'
 
@@ -254,6 +252,9 @@ ENDM
     posYRead dw 00
     indiceTablero db 00, '$'
     object_map db 09 dup (0)
+    ocupadox db 9 dup('$')
+    ocupadoy db 9 dup('$')
+    limpiar db 26 dup(0)
 
 
     empty_block db     00, 00, 00, 00, 00, 00, 00, 00
@@ -378,30 +379,33 @@ ENDM
                     db     00, 01, 01, 00, 00, 00, 00, 00
                     db     01, 01, 00, 00, 00, 00, 00, 00
                     db     01, 00, 00, 00, 00, 00, 00, 00
-    barrao_dos      db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 00, 00, 00, 00, 00, 00, 00
-                    db     01, 01, 01, 01, 01, 01, 01, 01
-    barrao_tres     db     01, 01, 01, 01, 01, 01, 01, 01
+
+    barrao_dos      db     01, 01, 00, 00, 00, 00, 00, 00
+                    db     01, 01, 00, 00, 00, 00, 00, 00
+                    db     01, 01, 01, 00, 00, 00, 00, 00
+                    db     00, 00, 01, 01, 00, 00, 00, 00
+                    db     00, 00, 01, 01, 01, 00, 00, 00
+                    db     00, 00, 00, 01, 01, 01, 01, 01
+                    db     00, 00, 00, 00, 00, 01, 01, 01
+                    db     00, 00, 00, 00, 00, 01, 01, 01
+
+    barrao_tres     db     01, 01, 01, 00, 00, 00, 00, 00
+                    db     00, 01, 01, 01, 00, 00, 00, 00
+                    db     00, 00, 01, 01, 01, 00, 00, 00
+                    db     00, 00, 00, 01, 01, 01, 00, 00
+                    db     00, 00, 00, 00, 01, 01, 00, 00
+                    db     00, 00, 00, 00, 00, 01, 01, 00
+                    db     00, 00, 00, 00, 00, 00, 01, 01
                     db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
+
     barrao_cuatro   db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     00, 00, 00, 00, 00, 00, 00, 01
-                    db     01, 01, 01, 01, 01, 01, 01, 01
+                    db     00, 00, 00, 00, 00, 00, 01, 01
+                    db     00, 00, 00, 00, 00, 01, 01, 01
+                    db     00, 00, 00, 00, 01, 01, 01, 00
+                    db     00, 00, 00, 01, 01, 01, 00, 00
+                    db     00, 00, 01, 01, 01, 00, 00, 00
+                    db     00, 01, 01, 00, 00, 00, 00, 00
+                    db     01, 01, 00, 00, 00, 00, 00, 00
 
 
 
@@ -416,27 +420,107 @@ inicio:
 
         mostrarMenu
 
-
         CMP opcion2,50
         JE Jugar1
 
 
         Jugar1:
-            ;limpiarConsola
+            ;limpiarConso
             ;imprimirMensajes mensajeGanador
-            modoVideo
+            cambiarVideo
             ;CALL mLimpiar
-            ;CALL crearTablero
+            CALL crearTablero
 
-            ;CALL mLimpiar
-            ;CALL crearTablero
-            ;CALL PPAINTHORIZONTAL
-            ;dibujarlineaHorizontal
-            MOV BL, 50      ; BL -> Contador 50 iteraciones
-            MOV AL, 0Ch     ; Color codigo C (se puede usar un numero entre 0 y 255)
-            MOV CX, 10      ; Empiecen en la columna 10
-            MOV DX, 20      ; Empiece en la fila 20
-            MOV AH, 0Ch  
+            iniciojuego:
+                ;CMP Ganador,01
+                ;JE imprimirGanador
+                imprimirenVideo 13,00, ingresarCoordenadas
+                MOV cursorX,27
+                MOV cursorY,13
+                CALL PMOVERCURSOR
+                obtenerCoordenadas
+                mVerficarCoordenadas
+                CMP turno,01
+                JE turnox
+                CMP turno,02
+                JE turnoo
+
+                turnox:
+                    ;PUSH AX
+                    ;PUSH CX
+                    ;PUSH DX
+                    XOR AX, AX
+                    MOV AL, ingresarCoordenadaX
+                    ;imprimirenVideo 17,00,ingresarCoordenadaX
+                    XOR CX, CX
+                    MOV CL, ingresarCoordenadaY
+                    ;imprimirenVideo 18,00, ingresarCoordenadaY
+                    MOV DH, turno
+                    ;CALL PPUTFIGURE
+                    verificarOcupado ingresarCoordenadaY, ingresarCoordenadaX
+                    
+                    ;POP DX
+                    ;POP CX
+                    ;POP AX
+                    CMP celdaInvalida, 01
+                    JE volver_a_intentar
+                    guardarCoordenadas ingresarCoordenadaY, ingresarCoordenadaX
+                    imprimirenVideo 0Bh, 00, limpiar,0000
+                    ;CALL PDRAWX
+                    posicion_X ingresarCoordenadaY, ingresarCoordenadaX
+                    imprimirenVideo 20,3,ocupadoy
+                    imprimirenVideo 19,3,ocupadox
+                    CALL PCLEANLINECURSOR
+                    MOV limpiarFila, 0Bh
+                    CALL PCLEANANYLINE
+                    CALL PCHECKPLAYERWIN
+                    MOV turno, 02
+                    JMP iniciojuego
+
+                turnoo:
+                    ;PUSH AX
+                    ;PUSH CX
+                    ;PUSH DX
+                    XOR AX, AX
+                    MOV AL, ingresarCoordenadaX
+                    XOR CX, CX
+                    MOV CL, ingresarCoordenadaY
+                    MOV DH, turno
+                    ;CALL PPUTFIGURE
+                    ;POP DX
+                    ;POP CX
+                    ;POP AX
+                    verificarOcupado ingresarCoordenadaY, ingresarCoordenadaX
+                    
+                    CMP celdaInvalida, 01
+                    JE volver_a_intentar
+                    guardarCoordenadas ingresarCoordenadaY, ingresarCoordenadaX
+                    imprimirenVideo 0Bh, 00, limpiar,0000
+                    posicion_o ingresarCoordenadaY,ingresarCoordenadaX
+                    CALL PCLEANLINECURSOR
+                    MOV limpiarFila, 0Bh
+                    CALL PCLEANANYLINE
+                    CALL PCHECKPLAYERWIN
+                    MOV turno, 01
+                    JMP iniciojuego
+
+                volver_a_intentar:
+                    CALL PCLEANLINECURSOR
+                    MOV celdaInvalida, 00
+                    JMP iniciojuego
+
+                imprimirGanador:
+                    CMP turno,01
+                    JE ganador2
+                    CMP turno,02
+                    JE ganador1
+                ganador2:
+                    imprimirenVideo 15,00, mensajeGanador
+                    JMP iniciojuego
+                ganador1:
+                    imprimirenVideo 15,00,mensajeGanador
+                    JMP iniciojuego
+        terminarPrograma
 
     MAIN ENDP
 
@@ -556,52 +640,7 @@ inicio:
             POP AX
             ret
     PDRAWFIGURESCREEN ENDP
-
-    PDRAWO PROC
-      PUSH AX
-      PUSH CX
-
-      PUSH AX
-      PUSH CX
-      MOV DI, offset barrao_uno
-      CALL PDRAWFIGURESCREEN
-      INC AX
-      MOV DI, offset barrao_tres
-      CALL PDRAWFIGURESCREEN
-      POP CX
-      POP AX
-      
-      INC CX
-      MOV DI, offset barrao_dos
-      CALL PDRAWFIGURESCREEN
-      INC AX
-      MOV DI, offset barrao_cuatro
-      CALL PDRAWFIGURESCREEN
-
-      POP CX
-      POP AX  
-      RET
-    PDRAWO ENDP
-
-    PDRAWX PROC
-      PUSH AX
-      PUSH AX
-      MOV DI, offset barrax_uno
-      CALL PDRAWFIGURESCREEN
-      INC AX
-      MOV DI, offset barrax_dos
-      CALL PDRAWFIGURESCREEN
-      POP AX
-
-      INC CX
-      MOV DI, offset barrax_dos
-      CALL PDRAWFIGURESCREEN
-      INC AX
-      MOV DI, offset barrax_uno
-      CALL PDRAWFIGURESCREEN
-      POP AX
-      RET
-    PDRAWX ENDP
+    
 
     PCREAROBJETO PROC
         make_wall: 
@@ -616,11 +655,11 @@ inicio:
     PCREAROBJETO ENDP
 
     PPUTFIGURE PROC
-        PUSH AX
-        PUSH CX
+        ;PUSH AX
+        ;PUSH CX
 
-        MOV DI, offset object_map
-        MOV DL, 3          ; 3d
+        MOV DI, offset object_map       
+        MOV DL, 03          ; 3d
         XCHG AX, CX
         MUL DL              ; POS Y * 3d
         XCHG AX, CX
@@ -635,8 +674,8 @@ inicio:
             imprimirenVideo 0Bh, 00, mensajeCeldaInvalida,0004
             MOV celdaInvalida, 01
         finish_put_figure:
-            POP CX
-            POP AX
+            ;POP CX
+            ;POP AX
             ret
     PPUTFIGURE ENDP
 
@@ -751,16 +790,16 @@ inicio:
         XOR AX, AX
         MOV AL, ingresarCoordenadaX
         DEC AL
-        MOV CL, 6
+        MOV CL, 3
         MUL CL
-        ADD AX, 6
+        ADD AX, 3
         INC AX
         PUSH AX
         MOV AL, ingresarCoordenadaY
         DEC AL
-        MOV CL, 6
+        MOV CL, 3
         MUL CL
-        ADD AX, 6
+        ADD AX, 3
         INC AX
         XOR CX, CX
         MOV CX, AX
